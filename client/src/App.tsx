@@ -46,10 +46,11 @@ function App() {
     setLoading(true);
     await axios.post("https://api.derekzhang.ca/upload", data, {}).then(() => {
       toast.success("File uploaded.");
-      setLoading(false);
       setFile(undefined);
+      setLoading(false);
     }).catch(() => {
       toast.error("Error uploading file.");
+      setLoading(false);
     })
   }
 
