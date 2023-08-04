@@ -7,6 +7,7 @@ import React from 'react';
 import axios from 'axios';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import PulseLoader from "react-spinners/PulseLoader";
 
 function App() {
 
@@ -47,6 +48,7 @@ function App() {
     await axios.post("https://api.derekzhang.ca/upload", data, {}).then(() => {
       toast.success("File uploaded.");
       setFile(undefined);
+      if(inputRef.current) inputRef.current.value = "";
       setLoading(false);
     }).catch(() => {
       toast.error("Error uploading file.");
@@ -67,7 +69,10 @@ function App() {
           <input ref={inputRef} onChange={handleChange} style={{display: 'none'}} type="file"/>
           </form>
         </div>
-        <button className="submitButton" onClick={send} disabled={loading}>Submit</button>
+        <button className="submitButton" onClick={send} disabled={loading}>
+          {loading ? 
+          <PulseLoader loading={loading} size={5} color="#3FA1E8"/> : "Submit"}
+        </button>
         <p>{displayFile(file)}</p>
       </div>
       <ToastContainer />
