@@ -5,11 +5,14 @@ import './App.css'
 import { useRef, useState } from 'react';
 import React from 'react';
 import axios from 'axios';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 function App() {
 
   const inputRef = useRef<HTMLInputElement>(null);
   const [file, setFile] = useState<File>();
+  const [loading, setLoading] = useState<boolean>(false);
 
   const handleClick = () => {
     inputRef.current?.click();
@@ -40,7 +43,14 @@ function App() {
 
     data.append('file', file);
 
-    await axios.post("http://localhost:8000/upload", data, {}) 
+    setLoading(true);
+    await axios.post("http://198.46.160.230:8000/upload", data, {}).then(() => {
+      toast.error("File uploaded.");
+      setLoading(false);
+      setFile(undefined);
+    }).catch(() => {
+      toast.error("Error uploading file.");
+    })
   }
 
   return (
@@ -56,9 +66,10 @@ function App() {
           <input ref={inputRef} onChange={handleChange} style={{display: 'none'}} type="file"/>
           </form>
         </div>
-        <button onClick={send}>Submit</button>
+        <button className="submitButton" onClick={send} disabled={loading}>Submit</button>
         <p>{displayFile(file)}</p>
       </div>
+      <ToastContainer />
     </div>
   )
 }
