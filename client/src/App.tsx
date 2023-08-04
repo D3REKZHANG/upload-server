@@ -45,7 +45,7 @@ function App() {
 
     setLoading(true);
     await axios.post("http://198.46.160.230:8000/upload", data, {}).then(() => {
-      toast.error("File uploaded.");
+      toast.success("File uploaded.");
       setLoading(false);
       setFile(undefined);
     }).catch(() => {
