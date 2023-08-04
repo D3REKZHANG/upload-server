@@ -2,12 +2,13 @@ var express = require('express');
 var app = express();
 var multer = require('multer')
 var cors = require('cors');
+var fs = require('fs');
 
 app.use(cors())
 
 var storage = multer.diskStorage({
   destination: (req, file, cb) => {
-    cb(null, 'public')
+    cb(null, '/home/taro/transfer')
   },
   filename: (req, file, cb) => {
     cb(null, Date.now() + '-' + file.originalname )
@@ -33,6 +34,8 @@ app.post('/upload', (req, res) => {
     })
   });
 });
+
+app.use(express.static('/home/taro/transfer'));
 
 app.listen(8000, () => {
   console.log('App running on port 8000');
